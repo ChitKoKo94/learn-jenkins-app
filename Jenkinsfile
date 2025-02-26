@@ -30,6 +30,7 @@ pipeline {
             steps {
                 sh '''
                     echo 'Hello!'
+                    test -f build/index.html
                 '''
             }
         }
