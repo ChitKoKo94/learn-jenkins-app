@@ -36,6 +36,7 @@ pipeline {
             }
         }
         /*
+        does not work for some reason
         stage('E2E') {
             agent {
                 docker {
@@ -53,6 +54,23 @@ pipeline {
             }
         }
         */
+        // test run something in parallel
+        stage('Parallel') {
+            parallel {
+                stage('Test 1') {
+                    steps {
+                        echo 'Test 1'
+                        
+                    }
+                }
+                stage('Test 2') {
+                    steps {
+                        echo 'Test 2'
+                        
+                    }
+                }
+            }
+        }
     }
 
     post {
