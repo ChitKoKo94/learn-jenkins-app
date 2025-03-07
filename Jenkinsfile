@@ -85,6 +85,7 @@ pipeline {
             }
             steps {
                 sh '''
+                    echo 'Test SCM Polling'
                     npm install netlify-cli
                     node_modules/.bin/netlify --version
                     echo '$NETLIFY_SITE_ID'
