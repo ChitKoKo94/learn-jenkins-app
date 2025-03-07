@@ -94,6 +94,19 @@ pipeline {
                 '''
             }
         }
+        stage('Post Deployment') {
+            agent {
+                docker {
+                    image 'node:23-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    echo 'Testing / Post deployment action'
+                '''
+            }
+        }
     }
 
     post {
