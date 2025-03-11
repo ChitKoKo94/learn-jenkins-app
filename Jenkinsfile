@@ -92,13 +92,18 @@ pipeline {
                 '''
             }
         }
+        stage('Approval') {
+            steps {
+                input 'Do you wish to deploy to production?', ok: "Yes, I am sure!"
+            }
+        }
         /*
             npm install netlify-cli
             node_modules/.bin/netlify --version
             echo '$NETLIFY_SITE_ID'
             node_modules/.bin/netlify status
         */
-        stage('Deploy') {
+        stage('Deploy Prod') {
             agent {
                 docker {
                     image 'node:23-alpine'
