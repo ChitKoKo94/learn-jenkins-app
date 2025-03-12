@@ -91,6 +91,7 @@ pipeline {
                     node_modules/.bin/netlify deploy --dir=build --json > deploy-output.txt
                     node_modules/.bin/node-jq -r '.deploy_url' deploy-output.txt
                 '''
+                
             }
         }
         stage('Approval') {
@@ -117,9 +118,9 @@ pipeline {
                 }
             }
             steps {
+                echo 'Approved at ${env.APPROVAL_DATE}'
                 sh '''
                     echo 'Test SCM Polling'
-                    echo 'Approved at ${env.APPROVAL_DATE}'
                     node_modules/.bin/netlify deploy --dir=build --prod
                 '''
             }
