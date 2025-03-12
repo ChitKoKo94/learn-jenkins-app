@@ -91,7 +91,9 @@ pipeline {
                     node_modules/.bin/netlify deploy --dir=build --json > deploy-output.txt
                     node_modules/.bin/node-jq -r '.deploy_url' deploy-output.txt
                 '''
-                
+                script {
+                    env.APPROVAL_DATE = sh(script: 'date', returnStdout: true)
+                }
             }
         }
         stage('Approval') {
@@ -99,9 +101,7 @@ pipeline {
                 timeout(time: 10, unit: 'MINUTES') {
                     input message: 'Do you wish to deploy to production?', ok: "Yes, I am sure!"
                 }
-                script {
-                    env.APPROVAL_DATE = sh(script: 'date', returnStdout: true)
-                }
+                
             }
         }
         /*
