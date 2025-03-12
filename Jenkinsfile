@@ -118,7 +118,7 @@ pipeline {
                 }
             }
             steps {
-                echo 'Approved at ${env.APPROVAL_DATE}'
+                echo "Approved at ${env.APPROVAL_DATE}"
                 sh '''
                     echo 'Test SCM Polling'
                     node_modules/.bin/netlify deploy --dir=build --prod
