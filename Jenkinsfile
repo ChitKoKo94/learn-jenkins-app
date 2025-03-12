@@ -98,7 +98,7 @@ pipeline {
                 timeout(time: 10, unit: 'SECONDS') {
                     input message: 'Do you wish to deploy to production?', ok: "Yes, I am sure!"
                 }
-                script{
+                script {
                     env.APPROVAL_DATE = sh(script: 'date', returnStdout: true)
                 }
             }
@@ -119,7 +119,7 @@ pipeline {
             steps {
                 sh '''
                     echo 'Test SCM Polling'
-                    echo 'Approved at $env.APPROVAL_DATE'
+                    echo 'Approved at ${env.APPROVAL_DATE}'
                     node_modules/.bin/netlify deploy --dir=build --prod
                 '''
             }
