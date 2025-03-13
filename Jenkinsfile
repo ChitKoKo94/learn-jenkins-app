@@ -89,11 +89,20 @@ pipeline {
                     echo '$NETLIFY_SITE_ID'
                     node_modules/.bin/netlify status
                     node_modules/.bin/netlify deploy --dir=build --json > deploy-output.txt
-                    node_modules/.bin/node-jq -r '.deploy_url' deploy-output.txt
+                    
                 '''
                 script {
                     env.APPROVAL_DATE = sh(script: 'date', returnStdout: true)
+                    env.STAGING_URL = sh(script: "node_modules/.bin/node-jq -r '.deploy_url' deploy-output.txt", returnStdout: true)
                 }
+            }
+        }
+        stage('Staging E2E') {
+            environment {
+                CI_ENVIRONMENT_URL = "$env.STAGING_URL"
+            }
+            steps {
+                echo "Staging URL - $env.STAGING_URL"
             }
         }
         stage('Approval') {
