@@ -130,7 +130,7 @@ pipeline {
                 echo "Approved at ${env.APPROVAL_DATE}"
                 sh '''
                     echo 'Test SCM Polling'
-                    echo "Approved at ${env.APPROVAL_DATE}"
+                    echo "Approved at $env.APPROVAL_DATE"
                     npm install netlify-cli
                     node_modules/.bin/netlify --version
                     echo '$NETLIFY_SITE_ID'
