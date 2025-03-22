@@ -42,13 +42,14 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                     sh '''
                         aws --version   
-                        aws ecs register-task-definition --cli-input-json file://aws/task-definition-prod.json
-                        #aws s3 ls
-                        #aws s3 sync build s3://$AWS_S3_BUCKET
+                        #aws ecs register-task-definition --cli-input-json file://aws/task-definition-prod.json
+                        aws ecs --cluster LearnJenkinsApp-CKK-Cluster-Prod update-service --service LearnJenkinsApp-Service-Prod --task-definition LearnJenkinsApp-Task-Prod:2                   
                     '''
                 }
             }
         }
+        // aws s3 ls
+        // aws s3 sync build s3://$AWS_S3_BUCKET
         stage('Test') {
             agent {
                 docker {
