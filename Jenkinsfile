@@ -37,8 +37,9 @@ pipeline {
             }
             steps {
                 sh '''
-                    amazon-linux-extras install docker
-                    docker build -t my-jenkins-app .
+                    ping -c 4 8.8.8.8
+                    #amazon-linux-extras install docker
+                    #docker build -t my-jenkins-app .
                 '''
             }
         }
