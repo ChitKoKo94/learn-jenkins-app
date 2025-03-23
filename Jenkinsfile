@@ -30,7 +30,7 @@ pipeline {
         stage('Build Docker Image') {
             agent {
                 docker {
-                    image 'amazon/aws-cli:latest'
+                    image 'amazon/aws-cli'
                     reuseNode true
                     args "-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint='' --network host"
                 }
@@ -38,7 +38,7 @@ pipeline {
             steps {
                 sh '''
                     amazon-linux-extras install docker
-                    #docker build -t my-jenkins-app .
+                    docker build -t my-jenkins-app .
                 '''
             }
         }
@@ -47,7 +47,7 @@ pipeline {
                 docker {
                     image 'amazon/aws-cli'
                     reuseNode true
-                    args "-u root --entrypoint=''"
+                    args "-u root --entrypoint='' --network host"
                 }
             }
             environment {
@@ -58,7 +58,7 @@ pipeline {
                     sh '''
                         aws --version 
                         #yum update
-                        #yum install jq -y 
+                        yum install jq -y 
                         #LATEST_TD_REVISION=$(aws ecs register-task-definition --cli-input-json file://aws/task-definition-prod.json | jq '.taskDefinition.revision')
                         #echo $LATEST_TD_REVISION
                         #aws ecs update-service --cluster LearnJenkinsApp-CKK-Cluster-Prod --service LearnJenkinsApp-Service-Prod --task-definition LearnJenkinsApp-Task-Prod:$LATEST_TD_REVISION                
