@@ -27,25 +27,17 @@ pipeline {
                 '''
             }
         }
-        stage('Network Connectivity Test') {
-            steps {
-                sh '''
-                    echo "Testing internet connectivity..."
-                    curl -I http://www.google.com || echo "Failed to reach Google"
-                '''
-            }
-        }
         stage('Build Docker Image') {
             agent {
                 docker {
                     image 'amazon/aws-cli:latest'
                     reuseNode true
-                    args "-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=''"
+                    args "-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint='' --network host"
                 }
             }
             steps {
                 sh '''
-                    #amazon-linux-extras install docker
+                    amazon-linux-extras install docker
                     #docker build -t my-jenkins-app .
                 '''
             }
