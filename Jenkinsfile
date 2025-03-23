@@ -27,6 +27,14 @@ pipeline {
                 '''
             }
         }
+        stage('Network Connectivity Test') {
+            steps {
+                sh '''
+                    echo "Testing internet connectivity..."
+                    curl -I http://www.google.com || echo "Failed to reach Google"
+                '''
+            }
+        }
         stage('Build Docker Image') {
             agent {
                 docker {
@@ -37,7 +45,6 @@ pipeline {
             }
             steps {
                 sh '''
-                    ping -c 4 8.8.8.8
                     #amazon-linux-extras install docker
                     #docker build -t my-jenkins-app .
                 '''
