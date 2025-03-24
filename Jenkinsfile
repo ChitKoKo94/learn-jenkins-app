@@ -32,20 +32,11 @@ pipeline {
                 docker {
                     image 'my-aws-cli'
                     reuseNode true
-                    args "-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint='' --network host"
+                    args "-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=''"
                 }
             }
             steps {
                 sh '''
-                    amazon-linux-extras install docker
-                    docker build -t my-jenkins-app .
-                '''
-            }
-        }
-        stage('Build Docker Image') {
-            steps {
-                sh '''
-                    amazon-linux-extras install docker
                     docker build -t my-jenkins-app .
                 '''
             }
@@ -53,9 +44,9 @@ pipeline {
         stage('AWS Deploy') {
             agent {
                 docker {
-                    image 'amazon/aws-cli'
+                    image 'my-aws-cli'
                     reuseNode true
-                    args "-u root --entrypoint='' --network host"
+                    args "--entrypoint=''"
                 }
             }
             environment {
@@ -65,11 +56,9 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                     sh '''
                         aws --version 
-                        #yum update
-                        yum install jq -y 
-                        #LATEST_TD_REVISION=$(aws ecs register-task-definition --cli-input-json file://aws/task-definition-prod.json | jq '.taskDefinition.revision')
-                        #echo $LATEST_TD_REVISION
-                        #aws ecs update-service --cluster LearnJenkinsApp-CKK-Cluster-Prod --service LearnJenkinsApp-Service-Prod --task-definition LearnJenkinsApp-Task-Prod:$LATEST_TD_REVISION                
+                        LATEST_TD_REVISION=$(aws ecs register-task-definition --cli-input-json file://aws/task-definition-prod.json | jq '.taskDefinition.revision')
+                        echo $LATEST_TD_REVISION
+                        aws ecs update-service --cluster LearnJenkinsApp-CKK-Cluster-Prod --service LearnJenkinsApp-Service-Prod --task-definition LearnJenkinsApp-Task-Prod:$LATEST_TD_REVISION                
                         aws ecs wait services-stable --cluster LearnJenkinsApp-CKK-Cluster-Prod --services LearnJenkinsApp-Service-Prod
                     '''
                 }
