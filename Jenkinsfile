@@ -6,6 +6,7 @@ pipeline {
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
         REACT_APP_VERSION = "1.0.$BUILD_ID"
         AWS_DEFAULT_REGION = 'us-west-2'
+        APP_IMAGE_NAME = 'my-jenkins-app'
     }
 
     stages {
@@ -37,7 +38,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    docker build -t my-jenkins-app .
+                    docker build -t $APP_IMAGE_NAME:$REACT_APP_VERSION .
                 '''
             }
         }
@@ -56,10 +57,10 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                     sh '''
                         aws --version 
-                        LATEST_TD_REVISION=$(aws ecs register-task-definition --cli-input-json file://aws/task-definition-prod.json | jq '.taskDefinition.revision')
-                        echo $LATEST_TD_REVISION
-                        aws ecs update-service --cluster LearnJenkinsApp-CKK-Cluster-Prod --service LearnJenkinsApp-Service-Prod --task-definition LearnJenkinsApp-Task-Prod:$LATEST_TD_REVISION                
-                        aws ecs wait services-stable --cluster LearnJenkinsApp-CKK-Cluster-Prod --services LearnJenkinsApp-Service-Prod
+                        #LATEST_TD_REVISION=$(aws ecs register-task-definition --cli-input-json file://aws/task-definition-prod.json | jq '.taskDefinition.revision')
+                        #echo $LATEST_TD_REVISION
+                        #aws ecs update-service --cluster LearnJenkinsApp-CKK-Cluster-Prod --service LearnJenkinsApp-Service-Prod --task-definition LearnJenkinsApp-Task-Prod:$LATEST_TD_REVISION                
+                        #aws ecs wait services-stable --cluster LearnJenkinsApp-CKK-Cluster-Prod --services LearnJenkinsApp-Service-Prod
                     '''
                 }
             }
