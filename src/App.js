@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <div class="container">
+        <div className="container">
           <h1>CI-CD Project Overview</h1>
           <p>This application is running on AWS ECS service and Jenkins pipeline automates the end-to-end process of building, containerizing, and deploying of the project.</p>
           <h2>Workflow Steps:</h2>
@@ -15,7 +15,7 @@ function App() {
               <li>Utilize <strong>AWS CLI Docker image</strong> to push the Docker image to <strong>Amazon Elastic Container Registry (ECR)</strong>.</li>
               <li>Deploys the updated image to an <strong>AWS ECS service</strong>.</li>
           </ul>
-          <div class="footer">
+          <div className="footer">
               <p>&copy; 2025 Jenkins Automation Project</p>
           </div>
         </div>
