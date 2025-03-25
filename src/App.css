@@ -42,12 +42,16 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 }
+
 h1 {
     color: #0073e6;
 }
+
 ul {
     line-height: 1.8;
+    text-align: left !important;
 }
+
 .footer {
     text-align: center;
     margin-top: 20px;
